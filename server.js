@@ -63,11 +63,8 @@ app.post('/db', function(request, response) {
 	let parameters = request.body.parameters;
 
 	if (query) {
-		console.log(query);
 		connection.query(query, parameters, function(error, results, fields) {
 			if (error) throw error;
-
-			console.log(results);
 
 			response.send(results);
 			response.end();
