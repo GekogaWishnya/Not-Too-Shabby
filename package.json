@@ -1,5 +1,5 @@
 {
-  "name": "NotTooShabby",
+  "name": "not-too-shabby",
   "packageManager": "yarn@4.5.1",
   "scripts": {
     "start": "server.js"
