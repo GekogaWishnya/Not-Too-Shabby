@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Not Too Shabby</title>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div id="universalHeader"></div>
+
+    <main>
+
+      <div id="gameShowcaseCarusel" class="carousel slide border-bottom" data-bs-ride="carousel">
+        <div id="carouselButtons" class="carousel-indicators"></div>
+        <div id="carouselList" class="carousel-inner"></div>
+
+        <div id="gameShowcaseTitle" class="container">
+          
+        </div>
+      
+        <button class="carousel-control-prev" type="button" data-bs-target="#gameShowcaseCarusel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+      
+        <button class="carousel-control-next" type="button" data-bs-target="#gameShowcaseCarusel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-6">
+            <h5 class="text-white-50" style="margin-bottom: 0;">Информация</h5>
+            <p id="additionalGameInfo" class="text-white-50" style="white-space: pre-line"></p>
+          </div>
+      </div>
+
+    </main>
+
+    <div id="universalFooter"></div>
+      
+  </body>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src='js/cookieHell.js'></script>
+  <script src="js/carusel.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      $("#universalHeader").load("parts/universalHeader.html");
+      $("#universalFooter").load("parts/universalFooter.html");
+
+      let idx = document.URL.indexOf('?');
+      let params = new Array();
+      if (idx != -1) {
+        let pairs = document.URL.substring(idx + 1, document.URL.length).split('&');
+        for (var i = 0; i < pairs.length; i++) {
+          nameVal = pairs[i].split('=');
+          params[nameVal[0]] = nameVal[1];
+        }
+      }
+
+      $.ajax({
+        url: "http://127.0.0.1:8080/db",
+        data: { 
+            "query": "SELECT * FROM games WHERE id = ?", 
+            "parameters": [params['gameID']]
+        },
+        cache: false,
+        type: "POST",
+        success: function(response) {
+          response = response[0];
+          addCaruselGamePageTitle(response);
+          addCaruselGamePageItem(response);
+          document.getElementById("additionalGameInfo").innerText = "Автор: " + response["author"] + "\nИздатель: " + response["publisher"] + "\n\n" + response["description"];
+        },
+        error: function(xhr) { }
+      });
+    });
+  </script>
+
+</html>

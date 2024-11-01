@@ -1,0 +1,16 @@
+body {
+    background-color: #212529;
+}
+
+.bg-darker {
+    background-color: #1d2024;
+}
+
+:root, [data-bs-theme=light] {
+    --bs-border-color: #54697E !important;
+}
+
+.card {
+    --bs-card-border-radius: 0 !important;
+    border-color: #54697E !important;
+}

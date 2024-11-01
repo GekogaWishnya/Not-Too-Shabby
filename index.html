@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Not Too Shabby</title>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div id="universalHeader"></div>
+
+    <main>
+
+      <div id="featuredCarusel" class="carousel slide border-bottom" data-bs-ride="carousel">
+        <div id="carouselButtons" class="carousel-indicators"></div>
+        <div id="carouselList" class="carousel-inner"></div>
+      
+        <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarusel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+      
+        <button class="carousel-control-next" type="button" data-bs-target="#featuredCarusel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <div id="homeFeedAlbum" class="album bg-dark">
+        <div class="container">
+          <div id="homeFeed" class="row row-cols-1 row-cols-sm-2 g-3">
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <div id="universalFooter"></div>
+    
+  </body>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src='js/cookieHell.js'></script>
+  <script src="js/carusel.js"></script>
+  <script src="js/homefeed.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      $("#universalHeader").load("parts/universalHeader.html");
+      $("#universalFooter").load("parts/universalFooter.html");
+
+      let topEntriesCount = 2;
+      $.ajax({
+        url: "http://127.0.0.1:8080/db",
+        data: { 
+            "query": "SELECT * FROM games ORDER BY globalScore / scoreCount DESC LIMIT " + topEntriesCount, 
+            "parameters": []
+        },
+        cache: false,
+        type: "POST",
+        success: function(response) {
+            for (let i = 0; i < topEntriesCount; i++) {
+            addCaruselItem(i, response[i]);
+          }
+        },
+        error: function(xhr) { }
+      });
+
+      let feedEntriesCount = 3;
+      $.ajax({
+        url: "http://127.0.0.1:8080/db",
+        data: { 
+            "query": "SELECT * FROM games ORDER BY rand() LIMIT " + feedEntriesCount, 
+            "parameters": []
+        },
+        cache: false,
+        type: "POST",
+        success: function(response) {
+          for (var i = 0; i < feedEntriesCount; i++)
+              addFeedItem(response[i]);
+        },
+        error: function(xhr) { }
+      });
+    });
+  </script>
+
+</html>

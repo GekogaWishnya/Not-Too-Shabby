@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Not Too Shabby</title>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div id="universalHeader"></div>
+
+    <main>
+
+      <div id="homeFeedAlbum" class="album bg-dark">
+        <div class="container">
+          <div class="container">
+            <h5 id="entriesCount" class="text-white mt-4"></h5>
+            <p id="checkOutInfo" class="text-white-50 font-monospace" style="white-space: pre"></p>
+            <button id="buyButton" type="button" class="btn btn-success" aria-current="page" hidden>Купить</button>
+          </div>
+          <div id="homeFeed" class="row row-cols-1 row-cols-sm-2 mt-4">
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <div id="universalFooter"></div>
+    
+  </body>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src='js/cookieHell.js'></script>
+  <script src="js/homefeed.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      let userID = getCookie("userID");
+      userID = parseInt(userID);
+
+      if (!userID) {
+        location.href = "home";
+        return;
+      }
+
+      $("#universalHeader").load("parts/universalHeader.html");
+      $("#universalFooter").load("parts/universalFooter.html");
+
+      let gameCart = getCookie("gameCart");
+      gameCart = gameCart.split(":");
+      let feedEntriesCount = gameCart.length;
+      let price = 0;
+
+      if (feedEntriesCount == 0) {
+        document.getElementById("entriesCount").innerText = "Ваша корзина пуста. А ну ка, быстро покупать игры!";
+        return;
+      } else {
+        document.getElementById("entriesCount").innerText = "Игр в корзине: " + feedEntriesCount;
+        document.getElementById("buyButton").hidden = false;
+      }
+
+      $.ajax({
+        url: "http://127.0.0.1:8080/db",
+        data: { 
+            "query": "SELECT * FROM games WHERE id in (?)", 
+            "parameters": [gameCart]
+        },
+        cache: false,
+        type: "POST",
+        success: function(response) {
+          for (let i = 0; i < feedEntriesCount; i++)
+            price += addCartItem(response[i]);
+
+          let element = document.getElementById("checkOutInfo");
+          element.innerText += ''.padEnd(72 + 2, '-') + "\n";
+          element.innerText += "Итог:".padEnd(72 - ('' + price).length) + price + " ₽"
+        },
+        error: function(xhr) { }
+      });
+    });
+
+    document.getElementById("buyButton").onclick = function () {
+      const userID = getCookie("userID");
+      let gameCart = getCookie("gameCart");
+      gameCart = gameCart.split(":");
+      const feedEntriesCount = gameCart.length;
+
+      for (var i = 0; i < feedEntriesCount; i++) {
+        $.ajax({
+          url: "http://127.0.0.1:8080/db",
+          data: { 
+              "query": "INSERT INTO libraries (userID, gameID) VALUES (?, ?)", 
+              "parameters": [userID, gameCart[i]]
+          },
+          cache: false,
+          type: "POST",
+          success: function(response) {
+            resetCookie("gameCart");
+            location.href = "profile";
+          },
+          error: function(xhr) { }
+        });
+      }
+    };
+  </script>
+
+</html>

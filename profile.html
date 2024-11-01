@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Not Too Shabby</title>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <link href="css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div id="universalHeader"></div>
+
+    <main>
+
+      <div id="homeFeedAlbum" class="album bg-dark">
+        <div class="container">
+          <h5 id="entriesCount" class="text-white-50 mt-4"></h5>
+          <div id="homeFeed" class="row row-cols-1 row-cols-sm-2 g-3">
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <div id="universalFooter"></div>
+    
+  </body>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src='js/cookieHell.js'></script>
+  <script src="js/homefeed.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      let userID = getCookie("userID");
+      userID = parseInt(userID);
+
+      if (!userID) {
+        location.href = "home";
+        return;
+      }
+
+      $("#universalHeader").load("parts/universalHeader.html");
+      $("#universalFooter").load("parts/universalFooter.html");
+
+      $.ajax({
+        url: "http://127.0.0.1:8080/db",
+        data: { 
+            "query": "SELECT gameID FROM libraries WHERE userID = ?", 
+            "parameters": [userID]
+        },
+        cache: false,
+        type: "POST",
+        success: function(response) {
+          let feedEntriesCount = response.length;
+          if (feedEntriesCount == 0) {
+            document.getElementById("entriesCount").innerText = "У вас пока нет ни одной игры.";
+            return;
+          } else {
+            document.getElementById("entriesCount").innerText = "Игр в библиотеке: " + feedEntriesCount;
+          }
+
+          for (var i = 0; i < feedEntriesCount; i++) {
+            let gameID = response[i]["gameID"];
+
+            $.ajax({
+              url: "http://127.0.0.1:8080/db",
+              data: { 
+                  "query": "SELECT * FROM games WHERE id = ?", 
+                  "parameters": [gameID]
+              },
+              cache: false,
+              type: "POST",
+              success: function(response) {
+                addFeedItem(response[0]);
+              },
+              error: function(xhr) { }
+            });
+          }
+        },
+        error: function(xhr) { }
+      });
+      
+    });
+  </script>
+
+</html>

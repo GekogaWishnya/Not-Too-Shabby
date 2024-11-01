@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+
+  <header>
+    <div class="navbar navbar-dark bg-dark border-bottom">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="home">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="44" stroke="white" fill="#212529" class="me-2" viewBox="3 1 13 23"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 24H14L16 8H3L5 24M3 8V5.5H16V8ZM9.5 1C12 4 13 7 9.5 7.5ZM10 7C12 6 11 4 9.5 2 8 4 7 6 9 7 9.508 7.213 10 7 10 7ZM12 12Q8 11 8 13 8 15 10 15 13 15 13 18T7 20V19Q12 20 12 18T10 16Q7 16 7 13T12 11V12ZM3.25 7.75H15.75V5.75H3.25V7.75Z"/></svg>
+          <strong>Not Too Shabby</strong>
+        </a>
+
+        <div class="text-end">
+          <button id="checkoutButton" type="button" class="btn btn-info me-2" aria-current="page" hidden></button>
+          <button id="profileButton" type="button" class="btn btn-outline-light me-2" aria-current="page" hidden></button>
+          <button id="logoutButton" type="button" class="btn btn-warning me-2" hidden>Выйти</button>
+
+          <button id="loginButton" type="button" class="btn btn-outline-light me-2" aria-current="page">Войти</button>
+          <button id="signupButton" type="button" class="btn btn-warning me-2">Создать</button>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="collapse bg-dark border-bottom" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">Информация</h4>
+            <p class="text-muted">Этот  сайт был пораждён в результате моих страданий</p>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <h4 class="text-white">Как со мной связаться</h4>
+            <ul class="list-unstyled">
+              <li><h6 class="text-white">Не стоит</h6></li>
+              <li><h6 class="text-white">Я серьёзно</h6></li>
+              <li><a href="mailto:o736b19@voenmeh.ru" class="text-white">Ну или напишите на почту</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="bg-dark shadow-sm border-bottom">
+      <div class="container d-flex flex-wrap">
+        <ul class="nav me-auto">
+          <li class="nav-item"><a class="nav-link link-light px-2" href="home">Главная</a></li>
+          <li class="nav-item"><a class="nav-link link-light px-2" href="faqs">FAQs</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <script>
+    document.getElementById("signupButton").onclick = function () {
+      location.href = "signup";
+    };
+
+    document.getElementById("loginButton").onclick = function () {
+      location.href = "login";
+    };
+
+    document.getElementById("logoutButton").onclick = function () {
+      resetCookie("userID");
+      resetCookie("gameCart");
+      location.href = "home";
+    };
+
+    document.getElementById("profileButton").onclick = function () {
+      location.href = "profile";
+    };
+
+    document.getElementById("checkoutButton").onclick = function () {
+      location.href = "checkout";
+    };
+
+    $(document).ready(function() {
+      let userID = getCookie("userID");
+      userID = parseInt(userID);
+
+      if (userID) {
+        $.ajax({
+          url: "http://127.0.0.1:8080/db",
+          data: { 
+              "query": "SELECT name FROM users WHERE id = ?", 
+              "parameters": [userID]
+          },
+          cache: false,
+          type: "POST",
+          success: function(response) {
+            response = response[0];
+            let element = document.getElementById("profileButton");
+            element.innerText = response["name"];
+
+            document.getElementById("loginButton").hidden = true;
+            document.getElementById("signupButton").hidden = true;
+            
+            element.hidden = false;
+            document.getElementById("logoutButton").hidden = false;
+
+            let checkoutItems = getCookie("gameCart");
+            checkoutItems = checkoutItems.split(":");
+            
+            if (checkoutItems[0] != "") {
+              element = document.getElementById("checkoutButton")
+              element.innerText = checkoutItems.length;
+              element.hidden = false;
+            }
+          },
+          error: function(xhr) { }
+        });
+      }
+    });
+  </script>
+
+</html>
