@@ -8,5 +8,5 @@ __metadata:
 "MySteam@workspace:.":
   version: 0.0.0-use.local
   resolution: "MySteam@workspace:."
-  languageName: ru
+  languageName: unknown
   linkType: soft
