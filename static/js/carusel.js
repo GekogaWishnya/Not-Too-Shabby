@@ -77,7 +77,7 @@ function addCaruselGamePageTitle(gameInfo) {
         const userID = getCookie("userID");
 
         $.ajax({
-            url: document.URL + "db",
+            url: document.URL + "/db",
             data: { 
                 "query": "SELECT id FROM libraries WHERE userID = ? AND gameID = ?", 
                 "parameters": [userID, gameInfo["id"]]
