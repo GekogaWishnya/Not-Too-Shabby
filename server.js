@@ -19,8 +19,6 @@ const connection = mysql.createConnection({
 
 const app = express();
 
-app.set('trust proxy', 1);
-
 app.use(session({
 	cookie:{
 		secure: true,
