@@ -52,7 +52,7 @@
       $("#universalFooter").load("parts/universalFooter.html");
 
       $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: "/db",
         data: { 
             "query": "SELECT gameID FROM libraries WHERE userID = ?", 
             "parameters": [userID]
@@ -72,7 +72,7 @@
             let gameID = response[i]["gameID"];
 
             $.ajax({
-              url: "http://127.0.0.1:8080/db",
+              url: "/db",
               data: { 
                   "query": "SELECT * FROM games WHERE id = ?", 
                   "parameters": [gameID]
