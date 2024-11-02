@@ -32,13 +32,6 @@ app.use(session({
 	resave: false
 }));
 
-app.use(function(req, res, next){
-	if(!req.session){
-		return next(new Error('Oh no'))
-	}
-	next()
-});
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
@@ -92,5 +85,5 @@ app.post('/db', function(request, response) {
 var httpServer = createServer(app);
 
 httpServer.listen(8080, () => {
-    console.log("listening on localhost:8080");
+    console.log("PORT:8080");
 });
