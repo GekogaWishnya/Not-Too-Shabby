@@ -5,6 +5,7 @@ function login(name, password) {
             "query": "SELECT id FROM users WHERE name = ? AND password = ?", 
             "parameters": [name, password]
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {
@@ -37,6 +38,7 @@ function signup(name, password) {
             "query": "SELECT id FROM users WHERE name = ?", 
             "parameters": [name, password]
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {

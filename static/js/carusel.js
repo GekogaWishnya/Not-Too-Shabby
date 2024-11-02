@@ -82,6 +82,7 @@ function addCaruselGamePageTitle(gameInfo) {
                 "query": "SELECT id FROM libraries WHERE userID = ? AND gameID = ?", 
                 "parameters": [userID, gameInfo["id"]]
             },
+            timeout: 0,
             cache: false,
             type: "POST",
             success: function(response) {

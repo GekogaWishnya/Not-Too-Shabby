@@ -78,6 +78,7 @@
             "query": "SELECT * FROM games WHERE id = ?", 
             "parameters": [params['gameID']]
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {

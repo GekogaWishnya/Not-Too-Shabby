@@ -57,6 +57,7 @@
             "query": "SELECT gameID FROM libraries WHERE userID = ?", 
             "parameters": [userID]
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {
@@ -77,6 +78,7 @@
                   "query": "SELECT * FROM games WHERE id = ?", 
                   "parameters": [gameID]
               },
+              timeout: 0,
               cache: false,
               type: "POST",
               success: function(response) {

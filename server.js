@@ -62,7 +62,7 @@ app.post('/db', function(request, response) {
 
 	if (query) {
 		connection.query(query, parameters, function(error, results, fields) {
-			if (error) console.error(error.name);
+			if (error) console.error(error.message);
 
 			response.send(results);
 			response.end();
