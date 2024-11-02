@@ -11,19 +11,33 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const connection = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'root',
-	password : 'LoLGODOTA1&2',
-	database : 'shabby'
+	host     : 'sql7.freemysqlhosting.net',
+	user     : 'sql7742229',
+	password : 'JDgIbHcIgB',
+	database : 'sql7742229'
 });
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(session({
+	cookie:{
+		secure: true,
+		maxAge: 60000
+		   },
+	store: new RedisStore(),
 	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
+	saveUninitialized: true,
+	resave: false
 }));
+
+app.use(function(req, res, next){
+	if(!req.session){
+		return next(new Error('Oh no'))
+	}
+	next()
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
