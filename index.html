@@ -60,7 +60,7 @@
 
       let topEntriesCount = 2;
       $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: document.URL + "db",
         data: { 
             "query": "SELECT * FROM games ORDER BY globalScore / scoreCount DESC LIMIT " + topEntriesCount, 
             "parameters": []
@@ -77,7 +77,7 @@
 
       let feedEntriesCount = 3;
       $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: document.URL + "db",
         data: { 
             "query": "SELECT * FROM games ORDER BY rand() LIMIT " + feedEntriesCount, 
             "parameters": []

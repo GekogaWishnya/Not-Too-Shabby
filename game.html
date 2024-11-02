@@ -73,7 +73,7 @@
       }
 
       $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: document.URL + "db",
         data: { 
             "query": "SELECT * FROM games WHERE id = ?", 
             "parameters": [params['gameID']]
