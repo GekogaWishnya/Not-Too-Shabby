@@ -2,7 +2,6 @@ import mysql from 'mysql'
 import express from 'express'
 import session from 'express-session'
 import path from 'path'
-import RedisStore from 'connect-redis';
 
 import { createServer } from 'http'
 import { fileURLToPath } from 'url';
@@ -26,10 +25,7 @@ app.use(session({
 	cookie:{
 		secure: true,
 		maxAge: 60000
-		   },
-	store: new RedisStore({
-		port: 8080
-	}),
+	},
 	secret: 'secret',
 	saveUninitialized: true,
 	resave: false
