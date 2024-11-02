@@ -64,6 +64,8 @@ app.get(['/buy', '/checkout'], async (req, res) => {
 });
 
 app.post('/db', function(request, response) {
+	response.set('Access-Control-Allow-Origin', 'x-requested-with');
+
 	let query = request.body.query;
 	let parameters = request.body.parameters;
 
