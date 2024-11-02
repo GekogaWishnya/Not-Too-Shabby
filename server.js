@@ -14,7 +14,8 @@ const connection = mysql.createConnection({
 	host     : 'sql7.freemysqlhosting.net',
 	user     : 'sql7742229',
 	password : 'JDgIbHcIgB',
-	database : 'sql7742229'
+	database : 'sql7742229',
+	port: '3306'
 });
 
 const app = express();
@@ -68,8 +69,6 @@ app.post('/db', function(request, response) {
 
 	if (query) {
 		connection.query(query, parameters, function(error, results, fields) {
-			if (error) throw error;
-
 			response.send(results);
 			response.end();
 		});
