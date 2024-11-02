@@ -5,11 +5,11 @@ var path = require('path');
 var { createServer } = require('http');
 
 const connection = mysql.createConnection({
-	host     : 'sql7.freemysqlhosting.net',
-	user     : 'sql7742229',
-	password : 'JDgIbHcIgB',
-	database : 'sql7742229',
-	port: '3306'
+	host     : process.env.SQL_HOST,
+	user     : process.env.SQL_USER,
+	password : process.env.SQL_PASSWORD,
+	database : process.env.SQL_DB,
+	port: process.env.SQL_PORT
 });
 
 const app = express();
@@ -19,8 +19,8 @@ app.set('trust proxy', 1);
 app.use(session({
 	name: 'session',
 	maxAge: 14 * 24 * 60 * 60 * 1000,
-	secret: 'KON',
-	keys: ['help', 'me']
+	secret: process.env.SECRET,
+	keys: [process.env.KEY1, process.env.KEY2]
 }));
 
 app.use(express.json());
