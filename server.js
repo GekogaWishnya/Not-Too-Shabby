@@ -7,6 +7,8 @@ import { createServer } from 'http'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+var RedisStore = require('connect-redis')(session);
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -31,13 +33,6 @@ app.use(session({
 	saveUninitialized: true,
 	resave: false
 }));
-
-app.use(function(req, res, next){
-	if(!req.session){
-		return next(new Error('Oh no'))
-	}
-	next()
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -92,5 +87,5 @@ app.post('/db', function(request, response) {
 var httpServer = createServer(app);
 
 httpServer.listen(8080, () => {
-    console.log("listening on localhost:8080");
+    console.log("PORT:8080");
 });
