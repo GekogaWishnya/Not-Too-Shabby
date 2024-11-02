@@ -58,7 +58,7 @@
       $("#universalHeader").load("parts/universalHeader.html");
       $("#universalFooter").load("parts/universalFooter.html");
 
-      let topEntriesCount = 2;
+      let topEntriesCount = 3;
       $.ajax({
         url: "/db",
         data: { 
@@ -75,7 +75,7 @@
         error: function(xhr) { }
       });
 
-      let feedEntriesCount = 3;
+      let feedEntriesCount = 4;
       $.ajax({
         url: "/db",
         data: { 

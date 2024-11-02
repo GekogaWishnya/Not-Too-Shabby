@@ -66,7 +66,7 @@
       let params = new Array();
       if (idx != -1) {
         let pairs = document.URL.substring(idx + 1, document.URL.length).split('&');
-        for (var i = 0; i < pairs.length; i++) {
+        for (let i = 0; i < pairs.length; i++) {
           nameVal = pairs[i].split('=');
           params[nameVal[0]] = nameVal[1];
         }
@@ -83,7 +83,13 @@
         success: function(response) {
           response = response[0];
           addCaruselGamePageTitle(response);
-          addCaruselGamePageItem(response);
+
+          let imgTypes = ["keyImage", "secondaryImage", "thirdImage"]
+          for (let i = 0; i < 3; i++) {
+            if (response[imgTypes[i]])
+              addCaruselGamePageItem(i, response);
+          };
+
           document.getElementById("additionalGameInfo").innerText = "Автор: " + response["author"] + "\nИздатель: " + response["publisher"] + "\n\n" + response["description"];
         },
         error: function(xhr) { }
