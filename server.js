@@ -1,14 +1,8 @@
-import mysql from 'mysql'
-import express from 'express'
-import session from 'express-session'
-import path from 'path'
-
-import { createServer } from 'http'
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+var mysql = require('mysql');
+var express = require('express');
+var session = require('cookie-session');
+var path = require('path');
+var { createServer } = require('http');
 
 const connection = mysql.createConnection({
 	host     : 'sql7.freemysqlhosting.net',
@@ -20,14 +14,13 @@ const connection = mysql.createConnection({
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(session({
-	cookie:{
-		secure: true,
-		maxAge: 60000
-	},
-	secret: 'secret',
-	saveUninitialized: true,
-	resave: false
+	name: 'session',
+	maxAge: 14 * 24 * 60 * 60 * 1000,
+	secret: 'KON',
+	keys: ['help', 'me']
 }));
 
 app.use(express.json());
