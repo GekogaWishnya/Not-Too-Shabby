@@ -64,18 +64,12 @@ app.get(['/buy', '/checkout'], async (req, res) => {
 });
 
 app.post('/db', function(request, response) {
-	// response.set('Access-Control-Allow-Origin', 'x-requested-with');
-
 	let query = request.body.query;
 	let parameters = request.body.parameters;
 
 	if (query) {
-		console.log(query);
-		console.log(parameters);
-
 		connection.query(query, parameters, function(error, results, fields) {
-			// if (error) console.error(error);
-			console.log(response);
+			if (error) console.error(error.name);
 
 			response.send(results);
 			response.end();
