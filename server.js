@@ -2,12 +2,11 @@ import mysql from 'mysql'
 import express from 'express'
 import session from 'express-session'
 import path from 'path'
+import RedisStore from 'connect-redis';
 
 import { createServer } from 'http'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-
-var RedisStore = require('connect-redis')(session);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -28,7 +27,9 @@ app.use(session({
 		secure: true,
 		maxAge: 60000
 		   },
-	store: new RedisStore(),
+	store: new RedisStore({
+		port: 8080
+	}),
 	secret: 'secret',
 	saveUninitialized: true,
 	resave: false
