@@ -81,7 +81,7 @@
 
       if (userID) {
         $.ajax({
-          url: "http://127.0.0.1:8080/db",
+          url: "/db",
           data: { 
               "query": "SELECT name FROM users WHERE id = ?", 
               "parameters": [userID]

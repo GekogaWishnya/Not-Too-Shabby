@@ -58,13 +58,14 @@
       $("#universalHeader").load("parts/universalHeader.html");
       $("#universalFooter").load("parts/universalFooter.html");
 
-      let topEntriesCount = 2;
+      let topEntriesCount = 3;
       $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: "/db",
         data: { 
             "query": "SELECT * FROM games ORDER BY globalScore / scoreCount DESC LIMIT " + topEntriesCount, 
             "parameters": []
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {
@@ -75,13 +76,14 @@
         error: function(xhr) { }
       });
 
-      let feedEntriesCount = 3;
+      let feedEntriesCount = 4;
       $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: "/db",
         data: { 
             "query": "SELECT * FROM games ORDER BY rand() LIMIT " + feedEntriesCount, 
             "parameters": []
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {

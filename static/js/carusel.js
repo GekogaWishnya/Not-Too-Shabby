@@ -77,11 +77,12 @@ function addCaruselGamePageTitle(gameInfo) {
         const userID = getCookie("userID");
 
         $.ajax({
-            url: "http://127.0.0.1:8080/db",
+            url: "/db",
             data: { 
                 "query": "SELECT id FROM libraries WHERE userID = ? AND gameID = ?", 
                 "parameters": [userID, gameInfo["id"]]
             },
+            timeout: 0,
             cache: false,
             type: "POST",
             success: function(response) {
@@ -106,15 +107,16 @@ function addCaruselGamePageTitle(gameInfo) {
     }
 }
 
-function addCaruselGamePageItem(gameInfo) {
+function addCaruselGamePageItem(index, gameInfo) {
+    let imgType = ["keyImage", "secondaryImage", "thirdImage"][index];
     let list = document.getElementById("carouselList");
 
     let child = list.appendChild(document.createElement("div"));
     child.classList.add("carousel-item");
-    child.classList.add("active");
+    if (index == 0) { child.classList.add("active"); }
 
     let part = child.appendChild(document.createElement("img"));
-    part.src = "images/" + gameInfo["keyImage"];
+    part.src = "images/" + gameInfo[imgType];
 
     child = child.appendChild(document.createElement("div"));
     child.classList.add("container");
@@ -122,11 +124,13 @@ function addCaruselGamePageItem(gameInfo) {
     let buttons = document.getElementById("carouselButtons");
 
     child = buttons.appendChild(document.createElement("button"));
-    child.classList.add("active");
-    child.setAttribute("aria-current", "true");
+    if (index == 0) {
+        child.classList.add("active");
+        child.setAttribute("aria-current", "true");
+    }
 
     child.setAttribute("type", "button");
     child.setAttribute("data-bs-target", "#gameShowcaseCarusel");
-    child.setAttribute("data-bs-slide-to", 0);
-    child.setAttribute("aria-label", "Slide 0");
+    child.setAttribute("data-bs-slide-to", index);
+    child.setAttribute("aria-label", "Slide " + index);
 }

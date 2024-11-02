@@ -1,33 +1,26 @@
-import mysql from 'mysql'
-import express from 'express'
-import session from 'express-session'
-import path from 'path'
-
-import { createServer } from 'http'
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+var mysql = require('mysql');
+var express = require('express');
+var session = require('cookie-session');
+var path = require('path');
+var { createServer } = require('http');
 
 const connection = mysql.createConnection({
-	host     : 'sql7.freemysqlhosting.net',
-	user     : 'sql7742229',
-	password : 'JDgIbHcIgB',
-	database : 'sql7742229',
-	port: '3306'
+	host     : process.env.SQL_HOST,
+	user     : process.env.SQL_USER,
+	password : process.env.SQL_PASSWORD,
+	database : process.env.SQL_DB,
+	port: process.env.SQL_PORT
 });
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(session({
-	cookie:{
-		secure: true,
-		maxAge: 60000
-	},
-	secret: 'secret',
-	saveUninitialized: true,
-	resave: false
+	name: 'session',
+	maxAge: 14 * 24 * 60 * 60 * 1000,
+	secret: process.env.SECRET,
+	keys: [process.env.KEY1, process.env.KEY2]
 }));
 
 app.use(express.json());
@@ -69,6 +62,8 @@ app.post('/db', function(request, response) {
 
 	if (query) {
 		connection.query(query, parameters, function(error, results, fields) {
+			if (error) console.error(error.message);
+
 			response.send(results);
 			response.end();
 		});

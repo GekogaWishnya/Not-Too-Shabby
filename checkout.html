@@ -69,11 +69,12 @@
       }
 
       $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: "/db",
         data: { 
             "query": "SELECT * FROM games WHERE id in (?)", 
             "parameters": [gameCart]
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {
@@ -96,11 +97,12 @@
 
       for (var i = 0; i < feedEntriesCount; i++) {
         $.ajax({
-          url: "http://127.0.0.1:8080/db",
+          url: "/db",
           data: { 
               "query": "INSERT INTO libraries (userID, gameID) VALUES (?, ?)", 
               "parameters": [userID, gameCart[i]]
           },
+          timeout: 0,
           cache: false,
           type: "POST",
           success: function(response) {

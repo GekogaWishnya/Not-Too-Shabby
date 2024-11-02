@@ -1,10 +1,11 @@
 function login(name, password) {
     $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: "/db",
         data: { 
             "query": "SELECT id FROM users WHERE name = ? AND password = ?", 
             "parameters": [name, password]
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {
@@ -32,11 +33,12 @@ function login(name, password) {
 
 function signup(name, password) {
     $.ajax({
-        url: "http://127.0.0.1:8080/db",
+        url: "/db",
         data: { 
             "query": "SELECT id FROM users WHERE name = ?", 
             "parameters": [name, password]
         },
+        timeout: 0,
         cache: false,
         type: "POST",
         success: function(response) {
@@ -47,7 +49,7 @@ function signup(name, password) {
             }
             
             $.ajax({
-                url: "http://127.0.0.1:8080/db",
+                url: "/db",
                 data: { 
                     "query": "INSERT INTO users (name, password) VALUES (?, ?)", 
                     "parameters": [name, password]

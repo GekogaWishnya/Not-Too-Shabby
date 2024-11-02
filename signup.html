@@ -24,11 +24,11 @@
             <h6 id="errorText" class="text-warning"></h6>
     
             <div class="form-floating">
-              <input type="name" class="form-control bg-darker text-white" id="floatingInput" placeholder="Name" required>
+              <input type="name" class="form-control bg-darker text-white" id="floatingInput" placeholder="Name">
               <label class="text-white" for="floatingInput">Имя пользователя</label>
             </div>
             <div class="form-floating">
-              <input type="password" class="form-control bg-darker text-white" id="floatingPassword" placeholder="Password" required>
+              <input type="password" class="form-control bg-darker text-white" id="floatingPassword" placeholder="Password">
               <label class="text-white" for="floatingPassword">Пароль</label>
             </div>
     
@@ -71,6 +71,16 @@
     document.getElementById("submitButton").onclick = function () {
       var name = document.getElementById("floatingInput").value;
       var password = document.getElementById("floatingPassword").value;
+
+      if (name.length <= 3) {
+        document.getElementById("errorText").innerText = "Имя должно быть не короче 3х символов";
+        return;
+      }
+
+      if (password.length <= 3) {
+        document.getElementById("errorText").innerText = "Пароль должен быть не короче 3х символов";
+        return
+      }
 
       signup(name, password);
     };
