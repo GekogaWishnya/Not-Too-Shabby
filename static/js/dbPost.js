@@ -1,6 +1,6 @@
 function login(name, password) {
     $.ajax({
-        url: document.URL + "/db",
+        url: "/db",
         data: { 
             "query": "SELECT id FROM users WHERE name = ? AND password = ?", 
             "parameters": [name, password]
@@ -32,7 +32,7 @@ function login(name, password) {
 
 function signup(name, password) {
     $.ajax({
-        url: document.URL + "/db",
+        url: "/db",
         data: { 
             "query": "SELECT id FROM users WHERE name = ?", 
             "parameters": [name, password]
@@ -47,7 +47,7 @@ function signup(name, password) {
             }
             
             $.ajax({
-                url: document.URL + "/db",
+                url: "/db",
                 data: { 
                     "query": "INSERT INTO users (name, password) VALUES (?, ?)", 
                     "parameters": [name, password]
