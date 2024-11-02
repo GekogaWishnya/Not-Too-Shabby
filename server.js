@@ -70,7 +70,13 @@ app.post('/db', function(request, response) {
 	let parameters = request.body.parameters;
 
 	if (query) {
+		console.log(query);
+		console.log(parameters);
+
 		connection.query(query, parameters, function(error, results, fields) {
+			if (error) console.error(error);
+			console.log(response);
+
 			response.send(results);
 			response.end();
 		});
